@@ -22,6 +22,23 @@ mongoose.connect(process.env.MONGO_URL, {
 
 const TodoList = require('./model/TodoList')
 
+app.get('/todolists', async (_req, res) => {
+    const todoList = await TodoList.find()
+
+    res.json(todoList)
+})
+
+app.post('/todolists/new', (req, res) => {
+    const todo = new TodoList({
+        title: req.body.title,
+        description: req.body.description,
+        taskStatus: req.body.status
+    })
+
+    todo.save()
+
+    res.json(todo)
+})
 
 const server = app.listen(process.env.PORT, () =>
   console.log(`Server started on ${process.env.PORT}`)
