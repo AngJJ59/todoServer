@@ -40,6 +40,22 @@ app.post('/todolists/new', (req, res) => {
     res.json(todo)
 })
 
+app.delete('/todolists/delete/:uniqueIdentifier', async (req, res) => {
+    const result = await TodoList.findByIdAndDelete(req.params.uniqueIdentifier)
+
+    res.json(result)
+})
+
+app.put('/todolists/complete/:id', async (req, res) => {
+    const todo = await TodoList.findById(req.params.id)
+
+    todo.taskStatus = !todo.taskStatus
+    
+    todo.save()
+
+    res.json(todo)
+})
+
 const server = app.listen(process.env.PORT, () =>
   console.log(`Server started on ${process.env.PORT}`)
 );
